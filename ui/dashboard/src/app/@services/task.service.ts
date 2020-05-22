@@ -42,7 +42,7 @@ export class TaskService {
       modal.componentInstance.title = `Delete task`;
       modal.componentInstance.yes = `Yes, I'm sure`;
       modal.componentInstance.apiCall = () => {
-        return this.api.deleteTask(taskId).toPromise();
+        return this.api.task.delete(taskId).toPromise();
       };
       modal.result.then((res: any) => {
         resolve(res);
@@ -68,7 +68,7 @@ export class TaskService {
         return new Promise((resolve, reject) => {
           const promises = [];
           taskIds.forEach((id) => {
-            promises.push(this.api.deleteTask(id).toPromise());
+            promises.push(this.api.task.delete(id).toPromise());
           });
           allSettled(promises).then((data: any[]) => {
             const tasksInError = [];

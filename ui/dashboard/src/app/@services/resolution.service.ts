@@ -11,7 +11,7 @@ export class ResolutionService {
     constructor(private modalService: NgbModal, private api: ApiService) { }
 
     pause(resolutionId: string) {
-        return this.api.pauseResolution(resolutionId).toPromise();
+        return this.api.resolution.pause(resolutionId).toPromise();
     }
 
     pauseAll(resolutionIds: string[]) {
@@ -26,7 +26,7 @@ export class ResolutionService {
                 return new Promise((resolve, reject) => {
                     const promises = [];
                     resolutionIds.forEach((id) => {
-                        promises.push(this.api.pauseResolution(id).toPromise());
+                        promises.push(this.api.resolution.pause(id).toPromise());
                     });
                     allSettled(promises).then((data: any[]) => {
                         const resolutionsInError = [];
@@ -66,7 +66,7 @@ export class ResolutionService {
             modal.componentInstance.title = `Cancel resolution`;
             modal.componentInstance.yes = `Yes, I'm sure`;
             modal.componentInstance.apiCall = () => {
-                return this.api.cancelResolution(resolutionId).toPromise();
+                return this.api.resolution.cancel(resolutionId).toPromise();
             };
             modal.result.then((res: any) => {
                 resolve(res);
@@ -92,7 +92,7 @@ export class ResolutionService {
                 return new Promise((resolve, reject) => {
                     const promises = [];
                     resolutionIds.forEach((id) => {
-                        promises.push(this.api.cancelResolution(id).toPromise());
+                        promises.push(this.api.resolution.cancel(id).toPromise());
                     });
                     allSettled(promises).then((data: any[]) => {
                         const resolutionsInError = [];
@@ -124,7 +124,7 @@ export class ResolutionService {
     }
 
     extend(resolutionId: string) {
-        return this.api.extendResolution(resolutionId).toPromise();
+        return this.api.resolution.extend(resolutionId).toPromise();
     }
 
     extendAll(resolutionIds: string[]) {
@@ -139,7 +139,7 @@ export class ResolutionService {
                 return new Promise((resolve, reject) => {
                     const promises = [];
                     resolutionIds.forEach((id) => {
-                        promises.push(this.api.extendResolution(id).toPromise());
+                        promises.push(this.api.resolution.extend(id).toPromise());
                     });
                     allSettled(promises).then((data: any[]) => {
                         const resolutionsInError = [];
@@ -171,7 +171,7 @@ export class ResolutionService {
     }
 
     run(resolutionId: string) {
-        return this.api.runResolution(resolutionId).toPromise();
+        return this.api.resolution.run(resolutionId).toPromise();
     }
 
     runAll(resolutionIds: string[]) {
@@ -186,7 +186,7 @@ export class ResolutionService {
                 return new Promise((resolve, reject) => {
                     const promises = [];
                     resolutionIds.forEach((id) => {
-                        promises.push(this.api.runResolution(id).toPromise());
+                        promises.push(this.api.resolution.run(id).toPromise());
                     });
                     allSettled(promises).then((data: any[]) => {
                         const resolutionsInError = [];

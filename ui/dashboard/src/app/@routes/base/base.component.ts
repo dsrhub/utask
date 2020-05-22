@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd, NavigationError, Event } from '@angular/router';
 import { Subscription, observable } from 'rxjs';
 import * as _ from 'lodash';
+import MetaUtask from 'src/app/@models/meta.model';
 
 @Component({
   templateUrl: './base.html',
 })
 export class BaseComponent implements OnInit {
-  meta: any;
+  meta: MetaUtask;
   constructor(private activedRoute: ActivatedRoute, private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {

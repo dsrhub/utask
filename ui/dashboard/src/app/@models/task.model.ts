@@ -1,3 +1,41 @@
+export class ResolutionStep {
+    action: any;
+    children: any[];
+    children_steps: string[];
+    children_steps_map: { [map: string]: boolean };
+    conditions: any[];
+    custom_states: string[];
+    dependencies: string[];
+    description: string;
+    error: string;
+    foreach: string;
+    idempotent: boolean;
+    json_schema: any[];
+    last_run: Date;
+    max_retries: number;
+    name: string;
+    resources: string[];
+    retry_pattern: string;
+    state: string;
+    tags: { [tag: string]: boolean };
+    try_count: number;
+}
+
+export enum TaskType {
+    all = 'all',
+    own = 'own',
+    resolvable = 'resolvable',
+};
+
+export enum TaskState {
+    BLOCKED = 'BLOCKED',
+    CANCELLED = 'CANCELLED',
+    DONE = 'DONE',
+    RUNNING = 'RUNNING',
+    TODO = 'TODO',
+    WONTFIX = 'WONTFIX',
+};
+
 export class Comment {
     content: string;
     created: Date;
@@ -33,7 +71,7 @@ export default class Task {
     title: string;
     watcher_usernames: string[];
     tags: { [key: string]: string };
-    
+
     public constructor(init?: Partial<Task>) {
         Object.assign(this, init);
     }

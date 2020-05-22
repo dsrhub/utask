@@ -51,7 +51,7 @@ export class ModalEditRequestComponent implements OnInit {
       this.loading = true;
       const obj = jsYaml.safeLoad(this.text);
       this.errors = [];
-      this.api.putTask(obj.id, obj).subscribe((data) => {
+      this.api.task.update(obj.id, obj).subscribe((data) => {
         this.error = null;
         this.activeModal.close(data);
       }, (err: any) => {
@@ -73,49 +73,3 @@ export class ModalEditRequestComponent implements OnInit {
     }
   }
 }
-
-/*
-
-            let body = JSON.parse(this.editedTask);
-            this.api.apiUtaskTask.put({
-                id: this.task.id
-            }, body).$promise.then((result) => {
-                this.success({
-                    item: result.data
-                });
-            }).catch((err) => {
-                this.errors.main = _.get(err, "data.data.error", this.$translate.instant("common.error.message_general"));
-            });
-
-                    editRequest (task) {
-                        this.$uibModal.open({
-                            animation: true,
-                            template: `
-                            <oui-modal on-dismiss="$ctrl.$uibModalInstance.dismiss();">
-                                <utask-task-edit task="$ctrl.task" success="$ctrl.edit(item)"></utask-task-edit>
-                            </oui-modal>
-                            `,
-                            size: this.EnvFactory.config.sizeModal,
-                            resolve: {
-                                task: () => task,
-                            },
-                            controllerAs: "$ctrl",
-                            controller: class {
-                                constructor ($uibModalInstance, task) {
-                                    "ngInject";
-                                    this.$uibModalInstance = $uibModalInstance;
-                                    this.task = task;
-                                }
-                                edit (item) {
-                                    this.$uibModalInstance.close({
-                                        $value: item
-                                    });
-                                }
-                            }
-                        }).result.then((result) => {
-                            this.task = result.$value;
-                            this.toast.success("Successfully updated task");
-                        }, () => {
-                        });
-                    }
-                  */

@@ -53,7 +53,7 @@ export class ModalEditResolutionComponent implements OnInit {
       this.loading = true;
       const obj = jsYaml.safeLoad(this.text);
       this.errors = [];
-      this.api.putResolution(obj.id, obj).subscribe((data) => {
+      this.api.resolution.update(obj.id, obj).subscribe((data) => {
         this.error = null;
         this.activeModal.close(data);
       }, (err: any) => {

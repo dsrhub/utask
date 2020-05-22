@@ -68,7 +68,7 @@ import { ModalEditResolutionComponent } from './@modals/modal-edit-resolution/mo
 /*
   @Services Injectable
 */
-import { ApiService } from './@services/api.service';
+// import { ApiService } from './@services/api.service';
 import { ResolutionService } from './@services/resolution.service';
 import { TaskService } from './@services/task.service';
 import { RequestService } from './@services/request.service';
@@ -88,6 +88,7 @@ import { StatsComponent } from './@routes/stats/stats.component';
 import { ChartTaskStatesComponent } from './@components/chart-task-states/chart-task-states.component';
 import { AutofocusDirective } from './@directives/autofocus.directive';
 import { InputTagsComponent } from './@components/input-tags/input-tags.component';
+import { UTaskModule } from './utask.module';
 
 const pages = [
   AppComponent,
@@ -131,13 +132,13 @@ const pages = [
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
+    UTaskModule,
   ],
-  providers: [GraphService, ApiService, ResolutionService, TaskService, RequestService, { provide: ErrorHandler, useClass: MyErrorHandler }],
+  providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }],
   bootstrap: [AppComponent],
   entryComponents: [
     ModalYamlPreviewComponent,

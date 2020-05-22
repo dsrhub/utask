@@ -1,9 +1,8 @@
 import { of } from 'rxjs';
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../@services/api.service';
+import { ApiService, ParamsListTemplates, ParamsListTasks } from '../../@services/api.service';
 import * as _ from 'lodash';
-import MetaUtask from 'src/app/@models/meta-utask.model';
 import { ResolutionService } from 'src/app/@services/resolution.service';
 import { TaskService } from 'src/app/@services/task.service';
 import { delay, repeat, startWith } from 'rxjs/operators';
@@ -13,17 +12,10 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import Task from 'src/app/@models/task.model';
 import { environment } from 'src/environments/environment';
+import Meta from 'src/app/@models/meta.model';
 bbPromise.config({
   cancellation: true
 });
-
-export class SearchTask {
-  page_size?: number;
-  last?: string;
-  type?: string;
-  state?: string;
-  tag?: string[];
-}
 
 @Component({
   templateUrl: './home.html',
@@ -33,9 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   tags: string[] = [];
   loaders: { [key: string]: boolean } = {};
   errors: { [key: string]: any } = {};
-  meta: MetaUtask = null;
+  meta: Meta = null;
   tasks: Task[] = [];
-  pagination: SearchTask = {};
+  pagination: ParamsListTasks;
   hasMore = true;
   percentages: { [key: string]: number } = {};
   interval: ActiveInterval;
@@ -58,7 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.tags = tags;
     });
 
-    this.meta = this.route.parent.snapshot.data.meta as MetaUtask;
+    this.meta = this.route.parent.snapshot.data.meta as Meta;
     this.route.queryParams.subscribe(params => {
       this.pagination = this.queryToSearchTask(params);
       this.loaders.tasks = true;
@@ -195,7 +187,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
           this.loaders[`task${id}`] = true;
         });
-        this.api.task(id).toPromise().then((task: Task) => {
+        this.api.task.get(id).toPromise().then((task: Task) => {
           this.zone.run(() => {
             this.mergeTask(task);
           });
@@ -219,11 +211,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadTasks(last: string = '') {
     return new bbPromise((resolve, reject, onCancel) => {
-      const params: SearchTask = _.clone(this.pagination);
+      const params: ParamsListTasks = _.clone(this.pagination);
       params.last = last;
-      const sub = this.api.tasks(params).subscribe((data) => {
+      const sub = this.api.task.list(params).subscribe((data: any) => {
         resolve(data.body);
       }, (err) => {
+        console.log(err);
         reject(err);
       });
       onCancel(() => {
@@ -283,12 +276,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  queryToSearchTask(p?: any): SearchTask {
+  queryToSearchTask(p?: any): ParamsListTasks {
     const params = _.clone(p || this.router.routerState.snapshot.root.queryParams);
     if (params.tag && _.isString(params.tag)) {
       params.tag = [params.tag];
     }
-    const item = new SearchTask();
+    const item = new ParamsListTasks();
     if (params.itemPerPage && _.isNumber(+params.itemPerPage) && +params.itemPerPage <= 1000 && +params.itemPerPage >= 10) {
       item.page_size = +params.itemPerPage;
     } else {

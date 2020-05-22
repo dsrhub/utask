@@ -46,7 +46,7 @@ export class NewComponent implements OnInit {
   submit() {
     this.loaders.submit = true;
 
-    return this.api.postTask(this.item).toPromise().then((data: any) => {
+    return this.api.task.add(this.item).toPromise().then((data: any) => {
       this.errors.submit = null;
       this.router.navigate([`/task/${data.id}`]);
     }).catch((err) => {

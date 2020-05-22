@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { /*ActivatedRouteSnapshot, RouterStateSnapshot, */Resolve } from '@angular/router';
-import { ApiService } from '../@services/api.service';
+import { ApiService, ParamsListTemplates } from '../@services/api.service';
 import Template from '../@models/template.model';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -33,12 +33,12 @@ export class TemplatesResolve implements Resolve<any> {
 
     resolve() {
         return new Promise((resolve, reject) => {
-            const pagination = {
+            const pagination: ParamsListTemplates = {
                 page_size: 1000,
                 last: ''
             };
             const load = (p: any, items: Template[] = []) => {
-                return this.api.getTemplates(pagination).toPromise().then((data) => {
+                return this.api.template.list(pagination).toPromise().then((data) => {
                     items = items.concat(data.body as Template[]);
                     if (this.hasLast(data.headers, p)) {
                         return load(p, items);

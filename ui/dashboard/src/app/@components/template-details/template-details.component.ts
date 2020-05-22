@@ -27,29 +27,13 @@ export class TemplateDetailsComponent implements OnInit {
     constructor(private api: ApiService) {
     }
 
-    // generateSteps(item) {
-    //     const steps = [];
-    //     if (
-    //       _.get(item, 'steps', null) &&
-    //       _.isObjectLike(steps)
-    //     ) {
-    //       _.each(_.get(item, 'steps', null), (data: any, key: string) => {
-    //         steps.push({ key, data });
-    //       });
-    //       return steps;
-    //     } else {
-    //       return [];
-    //     }
-    //   }
-
     ngOnInit() {
         this.loading = true;
-        this.api.getTemplate(this.templateName).toPromise().then((data) => {
+        this.api.template.get(this.templateName).toPromise().then((data) => {
             this.template = data as Template;
             JSToYaml.spacingStart = ' '.repeat(0);
             JSToYaml.spacing = ' '.repeat(4);
             this.text = JSToYaml.stringify(this.template).value;
-            // this.steps = this.generateSteps(this.template);
         }).catch((err: any) => {
             this.error = err;
         }).finally(() => {
@@ -57,34 +41,3 @@ export class TemplateDetailsComponent implements OnInit {
         });
     }
 }
-
-/*
-public config: EditorConfig = {
-    readonly: true,
-    mode: 'ace/mode/yaml',
-    theme: 'ace/theme/monokai',
-    wordwrap: true
-  };
-
-  getText(obj: any) {
-    JSON2YAML.setSpacing(0, 4);
-    return JSON2YAML.stringify(obj);
-  }
-
-  generateSteps(item: any) {
-    if (!item) {
-      return [];
-    }
-    const steps = [];
-    if (
-      _.get(this, 'resolution.steps', null) &&
-      _.isObjectLike(item)
-    ) {
-      _.each(item, (data: any, key: string) => {
-        steps.push({ key, data });
-      });
-      return steps;
-    }
-    return [];
-  }
-*/

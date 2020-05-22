@@ -11,7 +11,7 @@ export class StatsResolve implements Resolve<any> {
     }
 
     resolve(route: ActivatedRouteSnapshot) {
-        return this.api.getStats().toPromise().then((res: any) => {
+        return this.api.stats.get().toPromise().then((res: any) => {
             return res as Stats;
         }).catch(() => {
             return {};

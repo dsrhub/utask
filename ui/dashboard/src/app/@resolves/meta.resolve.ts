@@ -13,11 +13,7 @@ export class MetaResolve implements Resolve<any> {
     }
 
     resolve() {
-        // route: ActivatedRouteSnapshot,
-        // state: RouterStateSnapshot
-        // ): Observable<any> | Promise<any> | any {
-        // // // // return this.homeObject.fetchTeam(route.params.id);
-        return this.api.getMeta().pipe(
+        return this.api.meta.get().pipe(
             catchError(err => {
                 this.router.navigate(['/error']);
                 return empty();
